@@ -38,13 +38,15 @@ func CreateExportUI(
 	showProgress bool,
 	constGC bool,
 	useSIPrefix bool,
+	checkMimetype bool,
 ) *UI {
 	ui := &UI{
 		UI: &common.UI{
-			ShowProgress: showProgress,
-			Analyzer:     analyze.CreateAnalyzer(),
-			ConstGC:      constGC,
-			UseSIPrefix:  useSIPrefix,
+			ShowProgress:  showProgress,
+			Analyzer:      analyze.CreateAnalyzer(checkMimetype),
+			ConstGC:       constGC,
+			UseSIPrefix:   useSIPrefix,
+			CheckMimetype: checkMimetype,
 		},
 		output:       output,
 		exportOutput: exportOutput,

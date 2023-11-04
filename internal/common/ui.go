@@ -17,6 +17,7 @@ type UI struct {
 	ShowApparentSize      bool
 	ShowRelativeSize      bool
 	ConstGC               bool
+	CheckMimetype         bool
 }
 
 // SetFollowSymlinks sets whether symlinks to files should be followed

@@ -63,6 +63,7 @@ func init() {
 	flags.BoolVarP(&af.NoColor, "no-color", "c", false, "Do not use colorized output")
 	flags.BoolVarP(&af.NonInteractive, "non-interactive", "n", false, "Do not run in interactive mode")
 	flags.BoolVarP(&af.NoProgress, "no-progress", "p", false, "Do not show progress in non-interactive mode")
+	flags.BoolVarP(&af.CheckMimetype, "check-mimetype", "M", false, "check file mimetype and extension and write them in report (only usable with export flag -o)")
 	flags.BoolVarP(&af.Summarize, "summarize", "s", false, "Show only a total in non-interactive mode")
 	flags.BoolVar(&af.UseSIPrefix, "si", false, "Show sizes with decimal SI prefixes (kB, MB, GB) instead of binary prefixes (KiB, MiB, GiB)")
 	flags.BoolVar(&af.NoPrefix, "no-prefix", false, "Show sizes as raw numbers without any prefixes (SI or binary) in non-interactive mode")

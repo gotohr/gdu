@@ -8,6 +8,7 @@ import (
 
 	"github.com/dundee/gdu/v5/internal/common"
 	"github.com/dundee/gdu/v5/pkg/fs"
+	"github.com/gabriel-vasile/mimetype"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -23,10 +24,11 @@ type ParallelAnalyzer struct {
 	wait             *WaitGroup
 	ignoreDir        common.ShouldDirBeIgnored
 	followSymlinks   bool
+	checkMimetype    bool
 }
 
 // CreateAnalyzer returns Analyzer
-func CreateAnalyzer() *ParallelAnalyzer {
+func CreateAnalyzer(checkMimetype bool) *ParallelAnalyzer {
 	return &ParallelAnalyzer{
 		progress: &common.CurrentProgress{
 			ItemCount: 0,
@@ -37,6 +39,7 @@ func CreateAnalyzer() *ParallelAnalyzer {
 		progressDoneChan: make(chan struct{}),
 		doneChan:         make(common.SignalGroup),
 		wait:             (&WaitGroup{}).Init(),
+		checkMimetype:    checkMimetype,
 	}
 }
 
@@ -154,6 +157,13 @@ func (a *ParallelAnalyzer) processDir(path string) *Dir {
 				Size:   info.Size(),
 				Parent: dir,
 			}
+
+			if a.checkMimetype {
+				mtype, _ := mimetype.DetectFile(filepath.Join(path, name))
+				file.MIME = mtype.String()
+				file.Ext = mtype.Extension()
+			}
+
 			setPlatformSpecificAttrs(file, info)
 
 			totalSize += info.Size()

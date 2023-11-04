@@ -63,6 +63,13 @@ func (f *File) EncodeJSON(writer io.Writer, topLevel bool) error {
 	if err := addString(&buff, f.GetName()); err != nil {
 		return err
 	}
+
+	buff = append(buff, []byte(`,"mime":`)...)
+	addString(&buff, f.GetMIME())
+
+	buff = append(buff, []byte(`,"ext":`)...)
+	addString(&buff, f.GetExt())
+
 	if f.GetSize() > 0 {
 		buff = append(buff, []byte(`,"asize":`)...)
 		buff = append(buff, []byte(strconv.FormatInt(f.GetSize(), 10))...)

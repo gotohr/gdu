@@ -63,6 +63,7 @@ type Flags struct {
 	ConstGC           bool     `yaml:"const-gc"`
 	Summarize         bool     `yaml:"summarize"`
 	UseSIPrefix       bool     `yaml:"use-si-prefix"`
+	CheckMimetype     bool     `yaml:"check-mimetype"`
 	NoPrefix          bool     `yaml:"no-prefix"`
 	WriteConfig       bool     `yaml:"-"`
 	ChangeCwd         bool     `yaml:"change-cwd"`
@@ -206,6 +207,7 @@ func (a *App) createUI() (UI, error) {
 			!a.Flags.NoProgress && a.Istty,
 			a.Flags.ConstGC,
 			a.Flags.UseSIPrefix,
+			a.Flags.CheckMimetype,
 		)
 	} else if a.Flags.NonInteractive || !a.Istty {
 		ui = stdout.CreateStdoutUI(

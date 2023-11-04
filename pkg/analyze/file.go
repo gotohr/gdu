@@ -17,9 +17,21 @@ type File struct {
 	Usage  int64
 	Mli    uint64
 	Flag   rune
+	MIME   string
+	Ext    string
 }
 
 // GetName returns name of dir
+func (f *File) GetMIME() string {
+	return f.MIME
+}
+
+// GetMIME return file MIME type
+func (f *File) GetExt() string {
+	return f.Ext
+}
+
+// GetExt returns file extension
 func (f *File) GetName() string {
 	return f.Name
 }
