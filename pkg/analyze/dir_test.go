@@ -20,7 +20,7 @@ func TestAnalyzeDir(t *testing.T) {
 	fin := testdir.CreateTestDir()
 	defer fin()
 
-	analyzer := CreateAnalyzer()
+	analyzer := CreateAnalyzer(false)
 	dir := analyzer.AnalyzeDir(
 		"test_dir", func(_, _ string) bool { return false }, false,
 	).(*Dir)
@@ -71,7 +71,7 @@ func TestIgnoreDir(t *testing.T) {
 	fin := testdir.CreateTestDir()
 	defer fin()
 
-	dir := CreateAnalyzer().AnalyzeDir(
+	dir := CreateAnalyzer(false).AnalyzeDir(
 		"test_dir", func(_, _ string) bool { return true }, false,
 	).(*Dir)
 
@@ -89,7 +89,7 @@ func TestFlags(t *testing.T) {
 	err = os.Symlink("test_dir/nested/file2", "test_dir/nested/file3")
 	assert.Nil(t, err)
 
-	analyzer := CreateAnalyzer()
+	analyzer := CreateAnalyzer(false)
 	dir := analyzer.AnalyzeDir(
 		"test_dir", func(_, _ string) bool { return false }, false,
 	).(*Dir)
@@ -117,7 +117,7 @@ func TestHardlink(t *testing.T) {
 	err := os.Link("test_dir/nested/file2", "test_dir/nested/file3")
 	assert.Nil(t, err)
 
-	analyzer := CreateAnalyzer()
+	analyzer := CreateAnalyzer(false)
 	dir := analyzer.AnalyzeDir(
 		"test_dir", func(_, _ string) bool { return false }, false,
 	).(*Dir)
@@ -143,7 +143,7 @@ func TestFollowSymlink(t *testing.T) {
 	err = os.Symlink("./file2", "test_dir/nested/file3")
 	assert.Nil(t, err)
 
-	analyzer := CreateAnalyzer()
+	analyzer := CreateAnalyzer(false)
 	analyzer.SetFollowSymlinks(true)
 	dir := analyzer.AnalyzeDir(
 		"test_dir", func(_, _ string) bool { return false }, false,
@@ -175,7 +175,7 @@ func TestBrokenSymlinkSkipped(t *testing.T) {
 	err = os.Symlink("xxx", "test_dir/nested/file3")
 	assert.Nil(t, err)
 
-	analyzer := CreateAnalyzer()
+	analyzer := CreateAnalyzer(false)
 	analyzer.SetFollowSymlinks(true)
 	dir := analyzer.AnalyzeDir(
 		"test_dir", func(_, _ string) bool { return false }, false,
@@ -197,7 +197,7 @@ func BenchmarkAnalyzeDir(b *testing.B) {
 
 	b.ResetTimer()
 
-	analyzer := CreateAnalyzer()
+	analyzer := CreateAnalyzer(false)
 	dir := analyzer.AnalyzeDir(
 		"test_dir", func(_, _ string) bool { return false }, false,
 	)

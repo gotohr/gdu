@@ -23,7 +23,7 @@ func TestErr(t *testing.T) {
 		assert.Nil(t, err)
 	}()
 
-	analyzer := CreateAnalyzer()
+	analyzer := CreateAnalyzer(false)
 	dir := analyzer.AnalyzeDir(
 		"test_dir", func(_, _ string) bool { return false }, false,
 	).(*Dir)
