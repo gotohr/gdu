@@ -5,8 +5,8 @@ CMD_GDU := cmd/gdu
 VERSION := $(shell git describe --tags 2>/dev/null)
 NAMEVER := $(NAME)-$(subst v,,$(VERSION))
 DATE := $(shell date +'%Y-%m-%d')
-GOFLAGS ?= -buildmode=pie -trimpath -mod=readonly -modcacherw
-GOFLAGS_STATIC ?= -trimpath -mod=readonly -modcacherw
+GOFLAGS ?= -buildmode=pie -trimpath -mod=readonly -modcacherw -pgo=default.pgo
+GOFLAGS_STATIC ?= -trimpath -mod=readonly -modcacherw -pgo=default.pgo
 LDFLAGS := -s -w -extldflags '-static' \
 	-X '$(PACKAGE)/build.Version=$(VERSION)' \
 	-X '$(PACKAGE)/build.User=$(shell id -u -n)' \
@@ -103,13 +103,15 @@ benchmark:
 	hyperfine --export-markdown=bench-cold.md \
 		--prepare 'sync; echo 3 | sudo tee /proc/sys/vm/drop_caches' \
 		--ignore-failure \
-		'gdu -npc ~' 'gdu -gnpc ~' 'dua ~' 'duc index ~' 'ncdu -0 -o /dev/null ~' \
-		'diskus ~' 'du -hs ~' 'dust -d0 ~' 'pdu ~'
+		'dua ~' 'duc index ~' 'ncdu -0 -o /dev/null ~' \
+		'diskus ~' 'du -hs ~' 'dust -d0 ~' 'pdu ~' \
+		'gdu -npc ~' 'gdu -gnpc ~'
 	hyperfine --export-markdown=bench-warm.md \
 		--warmup 5 \
 		--ignore-failure \
-		'gdu -npc ~' 'gdu -gnpc ~' 'dua ~' 'duc index ~' 'ncdu -0 -o /dev/null ~' \
-		'diskus ~' 'du -hs ~' 'dust -d0 ~' 'pdu ~'
+		'dua ~' 'duc index ~' 'ncdu -0 -o /dev/null ~' \
+		'diskus ~' 'du -hs ~' 'dust -d0 ~' 'pdu ~' \
+		'gdu -npc ~' 'gdu -gnpc ~'
 	sudo cpupower frequency-set -g schedutil
 
 clean:
